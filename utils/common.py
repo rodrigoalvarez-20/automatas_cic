@@ -56,13 +56,20 @@ def qrip_input_trans(states_definition: dict, original_state):
 
 
 def qrip_join_duplicate_paths(states_definition: dict):
+    # for every state in the current state definition
     for mod_state in states_definition:
+        # Omit the qstart state, as there cant be a trasition with this state as a destination
         if mod_state not in ["qstart"]:
+            # Merge using + operator
             # Unir mediante +
+            # Get all the loop states
             items_to_merge = [ x for x in states_definition[mod_state] if states_definition[mod_state][x] == mod_state ]
-            if len(items_to_merge) > 1:
+            if len(items_to_merge) > 1: # A simple validation 
+                # Concat all the items using the +
                 merged_trans = "+".join(items_to_merge)
+                # Add as a new transition element (R.E.) to the state
                 states_definition[mod_state][merged_trans] = mod_state
+                # Delete the already merged elements
                 for itm in items_to_merge:
                     del states_definition[mod_state][itm]
 
